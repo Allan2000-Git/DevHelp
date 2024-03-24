@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation"
 import { useMutation } from "react-query"
 import { Room } from "@/types/types"
 import { Loader2Icon } from "lucide-react"
+import { useState } from "react"
 
 const formSchema = z.object({
     roomName: z.string().min(2, {
@@ -29,25 +30,22 @@ const formSchema = z.object({
     description: z.string().min(2, {
         message: "Description must be at least 2 characters long.",
     }),
-    language: z.string().min(2, {
-        message: "Atleast ONE language must be specified",
+    tags: z.string().min(2, {
+        message: "Atleast ONE tag must be specified",
     }),
     repoLink: z.string()
 })
 
 function CreateRoomForm() {
     const router = useRouter();
-
-    const {mutate, isLoading} = useMutation({
-        mutationFn: createRoom
-    })
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             roomName: "",
             description: "",
-            language: "",
+            tags: "",
             repoLink: ""
         },
     })
@@ -55,13 +53,9 @@ function CreateRoomForm() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
         try {
-            // await createRoom(values);
-            mutate({
-                roomName: values.roomName,
-                description: values.description,
-                language: values.language,
-                repoLink: values.repoLink
-            });
+            setIsLoading(true);
+            await createRoom(values);
+            setIsLoading(false);
             router.push("/all-rooms");
             toast.success("Room created successfully.");
         } catch (error) {
@@ -106,7 +100,7 @@ function CreateRoomForm() {
                         />
                         <FormField
                         control={form.control}
-                        name="language"
+                        name="tags"
                         render={({ field }) => (
                             <FormItem>
                             <FormLabel>Tech Stack</FormLabel>

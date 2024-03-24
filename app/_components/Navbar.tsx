@@ -24,7 +24,7 @@ function Navbar() {
     // }, [session]);
 
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b shadow-md">
+        <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b shadow-md sticky top-0">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="DevHelp Logo" />
@@ -36,7 +36,7 @@ function Navbar() {
                         <DropdownMenu>
                             <DropdownMenuTrigger>
                                 <Avatar className="w-8 h-8">
-                                    <AvatarImage src={session.user.image} />
+                                    <AvatarImage src={session.user.image ?? undefined} />
                                     <AvatarFallback>{session.user.name}</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
@@ -71,6 +71,9 @@ function Navbar() {
                     </li>
                     <li>
                         <Link href="/create-room" className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Create Room</Link>
+                    </li>
+                    <li>
+                        <Link href="/all-rooms" className="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">All Rooms</Link>
                     </li>
                     </ul>
                 </div>
