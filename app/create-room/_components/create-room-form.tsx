@@ -23,8 +23,8 @@ import { Room } from "@/types/types"
 import { Loader2Icon } from "lucide-react"
 
 const formSchema = z.object({
-    username: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
+    roomName: z.string().min(2, {
+        message: "Room name must be at least 2 characters.",
     }),
     description: z.string().min(2, {
         message: "Description must be at least 2 characters long.",
@@ -45,7 +45,7 @@ function CreateRoomForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            roomName: "",
             description: "",
             language: "",
             repoLink: ""
@@ -57,13 +57,13 @@ function CreateRoomForm() {
         try {
             // await createRoom(values);
             mutate({
-                username: values.username,
+                roomName: values.roomName,
                 description: values.description,
                 language: values.language,
                 repoLink: values.repoLink
             });
+            router.push("/all-rooms");
             toast.success("Room created successfully.");
-            router.push("/");
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -80,12 +80,12 @@ function CreateRoomForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
                         control={form.control}
-                        name="username"
+                        name="roomName"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Room Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter your username" {...field} />
+                                <Input placeholder="Give your room a name" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>

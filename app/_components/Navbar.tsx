@@ -4,10 +4,18 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
-import { redirect } from 'next/navigation'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 function Navbar() {
-    const session = useSession()
+    const {data: session} = useSession()
 
     // useEffect(() => {
     //     if(session?.user){
@@ -18,21 +26,34 @@ function Navbar() {
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b shadow-md">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <Link href="https://flowbite.com/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+                <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+                    <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="DevHelp Logo" />
+                    <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">DevHelp</span>
                 </Link>
                 <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     {
-                        session?.data ?
-                        <Button 
-                        onClick={() => signOut()}
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-6 py-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Sign Out
-                        </Button> :
+                        session?.user ?
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <Avatar className="w-8 h-8">
+                                    <AvatarImage src={session.user.image} />
+                                    <AvatarFallback>{session.user.name}</AvatarFallback>
+                                </Avatar>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem className="capitalize">{session.user.name}</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <Button 
+                                onClick={() => signOut()}
+                                className="auth_btns">
+                                    Sign Out
+                                </Button>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        :
                         <Button 
                         onClick={() => signIn("google")}
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-6 py-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        className="auth_btns">
                             Sign In
                         </Button>
                     }
