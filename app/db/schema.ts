@@ -1,5 +1,8 @@
-import { integer, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, primaryKey, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import type { AdapterAccount } from '@auth/core/adapters'
+import { sql } from 'drizzle-orm';
+
+// authentication
 
 export const users = pgTable("user", {
     id: text("id").notNull().primaryKey(),
@@ -46,3 +49,16 @@ export const verificationTokens = pgTable("verificationToken", {
         compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
     })
 )
+
+// application specific
+
+export const rooms = pgTable("room", {
+    id: uuid('id').default(sql`gen_random_uuid()`).notNull().primaryKey(),
+    userId: text("userId")
+        .notNull()
+        .references(() => users.id, { onDelete: "cascade" }),
+    username: text("username").notNull(),
+    description: text("description").notNull(),
+    language: text("language").notNull(),
+    repoLink: text("repoLink"),
+})

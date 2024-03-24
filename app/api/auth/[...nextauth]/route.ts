@@ -1,17 +1,6 @@
 import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import { db } from "@/app/db"
-import type { Adapter } from "next-auth/adapters";
+import { config } from "@/lib/auth";
 
-export const handler = NextAuth({
-    adapter: DrizzleAdapter(db) as Adapter,
-    providers: [
-        GoogleProvider({
-            clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
-        }),
-    ],
-})
+export const handler = NextAuth(config)
 
 export { handler as GET, handler as POST }

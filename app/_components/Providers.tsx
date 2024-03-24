@@ -1,12 +1,19 @@
 "use client"
 
-import { SessionProvider, SessionProviderProps } from "next-auth/react"
+import { SessionProvider } from "next-auth/react"
 import { ReactNode } from "react"
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const Providers = ({children}:{ children: ReactNode}) => {
+    const queryClient = new QueryClient()
+
     return (
         <SessionProvider>
-            {children}
+            <QueryClientProvider client={queryClient}>
+                {children}
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
         </SessionProvider>
     )
 }

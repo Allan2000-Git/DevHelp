@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Providers from "./_components/Providers";
-import Navbar from "./_components/Navbar";
+import Providers from "./_components/providers";
+import Navbar from "./_components/navbar";
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
+          <Toaster richColors />
         </Providers>
       </body>
     </html>
