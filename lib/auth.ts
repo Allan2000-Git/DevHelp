@@ -30,7 +30,7 @@ export const config = {
             });
 
             if (!dbUser) {
-                throw new Error("no user with email found");
+                throw new Error("User not found.");
             }
 
             return {

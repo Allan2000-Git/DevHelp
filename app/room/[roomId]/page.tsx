@@ -1,3 +1,4 @@
+import VideoClient from '@/app/_components/stream-video-client';
 import { getRoom } from '@/data/rooms';
 import React from 'react'
 
@@ -7,11 +8,11 @@ async function Room(props: {params: {roomId: string}}) {
 
     return (
         <div className="max-w-screen-xl mx-auto p-4 min-h-screen">
-            <div className="grid grid-cols-5">
-                <div className="col-span-3 bg-red-500">
-                    VIDEO
+            <div className="grid grid-cols-5 gap-4">
+                <div className="col-span-3 flex flex-col justify-between rounded-lg border bg-card text-card-foreground shadow-md p-3">
+                    {room && <VideoClient room={room} />}
                 </div>
-                <div className="col-span-2 bg-blue-500">
+                <div className="col-span-2 flex flex-col justify-between rounded-lg border bg-card text-card-foreground shadow-md p-3">
                     CHAT
                 </div>
             </div>
