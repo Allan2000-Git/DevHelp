@@ -1,12 +1,17 @@
 
 import { db } from "@/app/db"
 import { rooms } from "@/app/db/schema"
-import { eq } from "drizzle-orm";
+import { eq, ilike } from "drizzle-orm";
 import { unstable_noStore as noStore } from 'next/cache';
 
-export const getAllRooms = async () => {
+export const getAllRooms = async (query: string) => {
     noStore();
-    const data = await db.select().from(rooms);
+    let data;
+    if(query){
+        data = await db.select().from(rooms).where(ilike(rooms.tags, `%${query}%`));
+    }else{
+        data = await db.select().from(rooms);
+    }
     return data;
 }
 

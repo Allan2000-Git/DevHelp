@@ -44,7 +44,7 @@ function Navbar() {
                                 <DropdownMenuItem className="capitalize">{session.user.name}</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <Button 
-                                onClick={() => signOut()}
+                                onClick={() => signOut({ callbackUrl: '/' })}
                                 className="auth_btns">
                                     Sign Out
                                 </Button>

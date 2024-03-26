@@ -18,8 +18,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { createRoom } from "@/actions/room"
 import { toast } from "sonner";
 import { useRouter } from "next/navigation"
-import { useMutation } from "react-query"
-import { Room } from "@/types/types"
 import { Loader2Icon } from "lucide-react"
 import { useState } from "react"
 
