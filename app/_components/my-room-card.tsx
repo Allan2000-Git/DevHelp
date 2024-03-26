@@ -69,7 +69,7 @@ function MyRoomCard({room}:{room: Room}) {
                             <AlertDialogFooter className="justify-end mt-5">
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction asChild>
-                                    <Button onClick={() => handleDeleteRoom(room.id)} variant="destructive">Delete Room</Button>
+                                    <Button onClick={() => handleDeleteRoom(room.id)} className="bg-red-500 hover:bg-red-600 transition duration-150">Delete Room</Button>
                                 </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>

@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/app/db";
-import { rooms } from "@/app/db/schema";
+import { rooms, users } from "@/app/db/schema";
 import { getSession } from "@/lib/auth";
 import { Room } from "@/types/types";
 import { eq, ilike } from "drizzle-orm";
@@ -87,4 +87,15 @@ export async function updateRoom(room: Room, roomId: string) {
     } catch (error) {
         throw new Error('Something went wrong while editing your room contents.')
     }
+}
+
+export const deleteUserAccount = async () => {
+    noStore();
+
+    const session = await getSession();
+    if (!session) {
+        throw new Error("You must be logged in to edit a room.");
+    }
+    
+    await db.delete(users).where(eq(users.id, session.user.id));
 }

@@ -8,14 +8,30 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { deleteUserAccount } from '@/actions/room'
 
 function Navbar() {
-    const {data: session} = useSession()
+    const {data: session} = useSession();
+
+    const handleDeleteUserAccount = async () => {
+        await deleteUserAccount();
+        signOut({ callbackUrl: '/' });
+    }
 
     // useEffect(() => {
     //     if(session?.user){
@@ -42,14 +58,45 @@ function Navbar() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <Link href="/my-rooms">
-                                    <DropdownMenuItem className="capitalize">My Rooms</DropdownMenuItem>
+                                    <DropdownMenuItem className="capitalize cursor-pointer">My Rooms</DropdownMenuItem>
                                 </Link>
+
                                 <DropdownMenuSeparator />
+
                                 <Button 
                                 onClick={() => signOut({ callbackUrl: '/' })}
-                                className="auth_btns">
+                                className="auth_btns bg-blue-700 hover:bg-blue-800">
                                     Sign Out
                                 </Button>
+
+                                <DropdownMenuSeparator />
+
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button
+                                        className="bg-red-500 hover:bg-red-600 rounded-lg">
+                                            Delete Account
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader className="space-y-4">
+                                            <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. All your data and settings will be permanently removed, and you will not be able to recover them.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter className="justify-end mt-5">
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction asChild>
+                                                <Button 
+                                                onClick={handleDeleteUserAccount}
+                                                className="bg-red-500 hover:bg-red-600 transition duration-150">
+                                                    Yes, delete my account
+                                                </Button>
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </DropdownMenuContent>
                         </DropdownMenu>
                         :
