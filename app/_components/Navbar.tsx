@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import {
     DropdownMenu,
@@ -41,7 +41,9 @@ function Navbar() {
                                 </Avatar>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <DropdownMenuItem className="capitalize">{session.user.name}</DropdownMenuItem>
+                                <Link href="/my-rooms">
+                                    <DropdownMenuItem className="capitalize">My Rooms</DropdownMenuItem>
+                                </Link>
                                 <DropdownMenuSeparator />
                                 <Button 
                                 onClick={() => signOut({ callbackUrl: '/' })}
