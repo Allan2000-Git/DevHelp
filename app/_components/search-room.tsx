@@ -14,7 +14,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Loader2Icon } from "lucide-react"
 
@@ -25,12 +25,12 @@ const formSchema = z.object({
 function SearchRoom() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const query = useSearchParams();
+    const searchParams = useSearchParams();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            query: query.get("query") ?? "",
+            query: searchParams.get("query") ?? "",
         },
     })
 
@@ -43,6 +43,10 @@ function SearchRoom() {
             router.push("/all-rooms");
         }
     }
+
+    useEffect(() => {
+        form.setValue("query", searchParams.get("query") ?? "");
+    }, [searchParams])
 
     return (
         <>
