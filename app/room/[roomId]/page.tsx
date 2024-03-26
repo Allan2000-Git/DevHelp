@@ -1,5 +1,5 @@
+import { getRoom } from '@/actions/room';
 import VideoClient from '@/app/_components/stream-video-client';
-import { getRoom } from '@/data/rooms';
 import React from 'react'
 
 async function Room(props: {params: {roomId: string}}) {

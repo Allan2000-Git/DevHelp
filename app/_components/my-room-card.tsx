@@ -14,7 +14,7 @@ import { FaGithub } from "react-icons/fa";
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import GetTags from './get-tags';
-import { TrashIcon } from 'lucide-react';
+import { PencilIcon, TrashIcon } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -54,26 +54,30 @@ function MyRoomCard({room}:{room: Room}) {
                 <Link href={`/room/${room.id}`}>
                     <Button>Join Room</Button>
                 </Link>
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button className="px-3 py-1" variant="destructive"><TrashIcon size={18} /></Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader className="space-y-4">
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                            This action cannot be undone. This room will be permanently removed and you will not have access to this room once deleted.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="justify-end mt-5">
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction asChild>
-                                <Button onClick={() => handleDeleteRoom(room.id)} variant="destructive">Delete Room</Button>
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-
+                <div className="flex gap-2">
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button size="icon" variant="destructive"><TrashIcon size={18} /></Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader className="space-y-4">
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                This action cannot be undone. This room will be permanently removed and you will not have access to this room once deleted.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter className="justify-end mt-5">
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction asChild>
+                                    <Button onClick={() => handleDeleteRoom(room.id)} variant="destructive">Delete Room</Button>
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                    <Link href={`/edit-room/${room.id}`}>
+                        <Button size="icon" className="bg-gray-400 text-black hover:text-white hover:bg-gray-500"><PencilIcon size={18} /></Button>
+                    </Link>
+                </div>
             </CardFooter>
         </Card>
 

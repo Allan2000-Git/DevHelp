@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -15,10 +14,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { createRoom } from "@/actions/room"
 import { toast } from "sonner";
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { Loader2Icon } from "lucide-react"
+import { Room } from "@/types/types"
+import { updateRoom } from "@/actions/room"
 import { useState } from "react"
 
 const formSchema = z.object({
@@ -34,27 +34,28 @@ const formSchema = z.object({
     repoLink: z.string()
 })
 
-function CreateRoomForm() {
+function EditRoomForm({room}:{room: Room}) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const {roomId} = useParams();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            roomName: "",
-            description: "",
-            tags: "",
-            repoLink: ""
+            roomName: room.roomName,
+            description: room.description,
+            tags: room.tags,
+            repoLink: room.repoLink || ""
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(true);
-            await createRoom(values);
+            await updateRoom({id: roomId as string, userId: room.userId, ...values}, roomId as string);
             setIsLoading(false);
-            router.push("/all-rooms");
-            toast.success("Room created successfully.");
+            toast.success("Room edited successfully.");
+            router.push("/my-rooms");
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -125,9 +126,9 @@ function CreateRoomForm() {
                             isLoading ? 
                             <Button disabled>
                                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-                                Creating Room
+                                Updating Room
                             </Button>
-                            : <Button type="submit">Create Room</Button>
+                            : <Button type="submit">Update Room</Button>
                         }
                     </form>
                 </Form>
@@ -136,4 +137,4 @@ function CreateRoomForm() {
     )
 }
 
-export default CreateRoomForm
+export default EditRoomForm

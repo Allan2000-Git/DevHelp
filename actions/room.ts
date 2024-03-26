@@ -59,3 +59,32 @@ export const deleteRoom = async (roomId: string) => {
     revalidatePath("/my-rooms");
     revalidatePath("/all-rooms");
 }
+
+export async function updateRoom(room: Room, roomId: string) {
+    noStore();
+    try {
+        const session = await getSession();
+        if (!session) {
+            throw new Error("You must be logged in to edit a room.");
+        }
+
+        const currentRoom = await getRoom(room.id);
+
+        if (!currentRoom) {
+            throw new Error("Room not found.");
+        }
+
+        if (currentRoom?.userId !== session.user.id) {
+            throw new Error("You are not authorized to edit this room.");
+        }
+
+        await db.update(rooms).set(room).where(eq(rooms.id, roomId));
+
+        revalidatePath("/my-rooms");
+        revalidatePath("/all-rooms");
+        revalidatePath(`/edit-room/${roomId}`);   
+        
+    } catch (error) {
+        throw new Error('Something went wrong while editing your room contents.')
+    }
+}
