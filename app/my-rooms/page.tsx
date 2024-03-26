@@ -1,11 +1,11 @@
 
 import React from 'react'
-import RoomCard from '../_components/room-card';
-import { getMyRooms } from '@/data/rooms';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import SearchRoom from '../_components/search-room';
 import Image from 'next/image';
+import MyRoomCard from '../_components/my-room-card';
+import { getMyRooms } from '@/actions/room';
 
 async function MyRooms() {
     const data = await getMyRooms();
@@ -24,7 +24,7 @@ async function MyRooms() {
                         <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-5">
                             {
                                 data?.map((room) => (
-                                    <RoomCard key={room.id} room={room} />
+                                    <MyRoomCard key={room.id} room={room} />
                                 ))
                             }
                         </div>

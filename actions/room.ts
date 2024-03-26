@@ -4,7 +4,9 @@ import { db } from "@/app/db";
 import { rooms } from "@/app/db/schema";
 import { getSession } from "@/lib/auth";
 import { Room } from "@/types/types";
+import { eq, ilike } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { unstable_noStore as noStore } from 'next/cache';
 
 export async function createRoom(room: Omit<Room, "id" | "userId">) {
     try {
@@ -20,4 +22,40 @@ export async function createRoom(room: Omit<Room, "id" | "userId">) {
     } catch (error) {
         throw new Error('Something went wrong while creating your room.')
     }
+}
+
+export const getAllRooms = async (query: string) => {
+    noStore();
+    let data;
+    if(query){
+        data = await db.select().from(rooms).where(ilike(rooms.tags, `%${query}%`));
+    }else{
+        data = await db.select().from(rooms);
+    }
+    return data;
+}
+
+export const getRoom = async (roomId: string) => {
+    noStore();
+    const data = await db.query.rooms.findFirst({
+        where: (rooms, { eq }) => eq(rooms.id, roomId),
+    });
+    return data;
+}
+
+export const getMyRooms = async () => {
+    noStore();
+    const session = await getSession();
+    if(!session){
+        throw new Error("Log in to view your rooms.")
+    }
+    const data = await db.select().from(rooms).where(eq(rooms.userId, session?.user.id));
+    return data;
+}
+
+export const deleteRoom = async (roomId: string) => {
+    noStore();
+    await db.delete(rooms).where(eq(rooms.id, roomId));
+    revalidatePath("/my-rooms");
+    revalidatePath("/all-rooms");
 }

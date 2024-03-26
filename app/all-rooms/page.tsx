@@ -1,10 +1,10 @@
 
 import React from 'react'
 import RoomCard from '../_components/room-card';
-import { getAllRooms } from '@/data/rooms';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import SearchRoom from '../_components/search-room';
+import { getAllRooms } from '@/actions/room';
 
 async function AllRooms({
     searchParams,
