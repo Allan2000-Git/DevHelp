@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import SearchRoom from '../_components/search-room';
 import { getAllRooms } from '@/actions/room';
+import RoomsSkeletonLoader from '../_components/rooms-skeleton-loader';
+import { Skeleton } from '@/components/ui/skeleton';
 
 async function AllRooms({
     searchParams,
@@ -24,11 +26,14 @@ async function AllRooms({
                 </Link>
             </div>
             <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-5">
-                {
-                    data?.map((room) => (
+            {
+                data.length > 0 ? (
+                    data.map((room) => (
                         <RoomCard key={room.id} room={room} />
                     ))
-                }
+                ) : (
+                    <RoomsSkeletonLoader />
+                )}
             </div>
         </div>
     )

@@ -102,7 +102,7 @@ function Navbar() {
                         :
                         <Button 
                         onClick={() => signIn("google")}
-                        className="auth_btns">
+                        className="auth_btns bg-main-700 hover:bg-main-800">
                             Sign In
                         </Button>
                     }
